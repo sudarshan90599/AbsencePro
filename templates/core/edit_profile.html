@@ -1,0 +1,62 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="container-fluid p-0 pt-5" style="background: linear-gradient(135deg, #5c5960, #3962aa);min-height: 100vh;">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm border-0 rounded-3">
+        
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h5 class="mb-0">👤 Profile Information</h5>
+        </div>
+        
+        <div class="card-body">
+          <form method="post">
+            {% csrf_token %}
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">📧 Email</label>
+                <input type="text" class="form-control shadow-sm" value="{{ request.user.username }}" disabled>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">📞 Mobile</label>
+                <input type="text" class="form-control shadow-sm" value="{{ request.user.profile.phone }}" disabled>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">👤 Name</label>
+              <input type="text" class="form-control shadow-sm" value="{{ request.user.first_name }}" disabled>
+            </div>
+
+            <hr>
+
+            <div class="row">
+              {% for field in form %}
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 mt-3">
+              <a href="{% url 'student_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+              <button type="submit" class="btn btn-primary">💾 Save</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

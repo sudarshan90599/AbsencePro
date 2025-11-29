@@ -1,0 +1,170 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="py-4" style="min-height:100vh; background: linear-gradient(135deg, #667eea, #764ba2);">
+
+  <div class="d-flex align-items-center mb-4 px-4">
+    <h2 class="fw-bold text-white mb-0">
+      👨‍🏫 Mentor Dashboard <span class="fw-light">({{ request.user.first_name }})</span>
+    </h2>
+    <a href="{% url 'logout' %}" class="btn btn-danger px-3 py-2 ms-auto me-5">Logout</a>
+  </div>
+
+  <div class="row text-center mb-4 px-4">
+    <!-- Pending -->
+    <div class="col">
+      <button class="card bg-warning text-white shadow-sm w-100" onclick="showSection('pending')">
+        <div class="card-body fw-semibold">
+          Pending: {{ stats.pending }}
+        </div>
+      </button>
+    </div>
+
+    <!-- Approved -->
+    <div class="col">
+      <button class="card bg-success text-white shadow-sm w-100" onclick="showSection('approved')">
+        <div class="card-body fw-semibold">
+          Approved: {{ stats.approved }}
+        </div>
+      </button>
+    </div>
+
+    <!-- Rejected -->
+    <div class="col">
+      <button class="card bg-danger text-white shadow-sm w-100" onclick="showSection('rejected')">
+        <div class="card-body fw-semibold">
+          Rejected: {{ stats.rejected }}
+        </div>
+      </button>
+    </div>
+  </div>
+
+  <!-- Pending Table -->
+  <div id="pending" class="section px-4">
+    <div class="card shadow-sm rounded-3 border-0">
+      <div class="card-header bg-white text-dark fw-bold">⏳Pending Leave Requests</div>
+      <div class="card-body">
+        {% if pending %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Student</th>
+                  <th>Leave Type</th>
+                  <th>Dates</th>
+                  <th>Days</th>
+                  <th>Reason</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for leave in pending %}
+                <tr>
+                  <td>{{ leave.student.first_name }}</td>
+                  <td>{{ leave.leave_type }}</td>
+                  <td>{{ leave.start_date }} → {{ leave.end_date }}</td>
+                  <td>{{ leave.num_days }}</td>
+                  <td>{{ leave.reason }}</td>
+                  <td>
+                    <a href="{% url 'review_leave' leave.pk %}" class="btn btn-primary btn-sm">Review</a>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="text-muted">No pending leave requests.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Approved Table -->
+  <div id="approved" class="section d-none px-4">
+    <div class="card shadow-sm rounded-3 border-0">
+      <div class="card-header bg-white text-dark fw-bold">✅Approved Leave Requests</div>
+      <div class="card-body">
+        {% if approved %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Student</th>
+                  <th>Leave Type</th>
+                  <th>Dates</th>
+                  <th>Reason</th>
+                  <th>Mentor Comments</th>
+                  <th>Reviewed At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for leave in approved %}
+                <tr>
+                  <td>{{ leave.student.first_name }}</td>
+                  <td>{{ leave.leave_type }}</td>
+                  <td>{{ leave.start_date }} → {{ leave.end_date }}</td>
+                  <td>{{ leave.reason }}</td>
+                  <td>{{ leave.review_comments|default:"-" }}</td>
+                  <td>{{ leave.reviewed_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="text-muted">No approved leave requests.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Rejected Table -->
+  <div id="rejected" class="section d-none px-4">
+    <div class="card shadow-sm rounded-3 border-0">
+      <div class="card-header bg-white text-dark fw-bold">❌ Rejected Leave Requests</div>
+      <div class="card-body">
+        {% if rejected %}
+          <div class="table-responsive">
+            <table class="table table-hover align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>Student</th>
+                  <th>Leave Type</th>
+                  <th>Dates</th>
+                  <th>Reason</th>
+                  <th>Mentor Comments</th>
+                  <th>Reviewed At</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for leave in rejected %}
+                <tr>
+                  <td>{{ leave.student.first_name }}</td>
+                  <td>{{ leave.leave_type }}</td>
+                  <td>{{ leave.start_date }} → {{ leave.end_date }}</td>
+                  <td>{{ leave.reason }}</td>
+                  <td>{{ leave.review_comments|default:"-" }}</td>
+                  <td>{{ leave.reviewed_at|date:"Y-m-d H:i" }}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        {% else %}
+          <p class="text-muted">No rejected leave requests.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showSection(sectionId) {
+  document.querySelectorAll(".section").forEach(sec => sec.classList.add("d-none"));
+  document.getElementById(sectionId).classList.remove("d-none");
+}
+</script>
+
+{% endblock %}

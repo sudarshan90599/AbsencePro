@@ -1,0 +1,39 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="py-5" style="min-height: 100vh; background: linear-gradient(135deg, #667eea, #764ba2);">
+  <div class="container">
+    
+    <!-- Page Title -->
+    <h2 class="fw-bold text-white mb-4">📋 Review Leave Request</h2>
+
+    <!-- Leave Details Card -->
+    <div class="card shadow-lg border-0 rounded-3 mb-4">
+      <div class="card-body">
+        <p><strong>👤 Student:</strong> {{ lr.student.first_name }} ({{ lr.student.email }})</p>
+        <p><strong>🏷 Leave Type:</strong> {{ lr.leave_type }}</p>
+        <p><strong>📅 Dates:</strong> {{ lr.start_date }} → {{ lr.end_date }} ({{ lr.num_days }} days)</p>
+        <p><strong>📝 Reason:</strong> {{ lr.reason }}</p>
+      </div>
+    </div>
+
+    <!-- Review Form -->
+    <div class="card shadow-lg border-0 rounded-3">
+      <div class="card-body">
+        <form method="post">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label class="form-label fw-semibold">💬 Comments</label>
+            <textarea name="comments" class="form-control shadow-sm rounded-3" rows="3"></textarea>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button type="submit" name="action" value="approve" class="btn btn-success px-4 rounded-pill">✅ Approve</button>
+            <button type="submit" name="action" value="reject" class="btn btn-danger px-4 rounded-pill">❌ Reject</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

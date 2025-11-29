@@ -1,0 +1,93 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-start" 
+     style="min-height: 100vh; background: linear-gradient(135deg, #5c5960, #3962aa); padding: 40px 20px;">
+
+  <div class="col-md-8">
+    <div class="card shadow-lg border-0 rounded-4 p-5 bg-white" style="min-height: 500px;">
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h4 class="mb-0 text-primary fw-bold">📝 Submit Leave Request</h4>
+        <a href="{% url 'student_dashboard' %}" 
+           class="text-decoration-none small fw-semibold text-primary">← Back to Dashboard</a>
+      </div>
+
+      <form method="post" id="leaveForm">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Leave Type</label>
+          {{ form.leave_type }}
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">Start Date</label>
+            {{ form.start_date }}
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label fw-semibold">End Date</label>
+            {{ form.end_date }}
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Reason for Leave</label>
+          {{ form.reason }}
+          <div class="form-text text-muted small">
+            <span id="reasonCount">0</span>/500 characters (minimum 10 required)
+          </div>
+        </div>
+
+        <div class="mb-3" id="mentorField">
+          <label class="form-label fw-semibold">Select Mentor (only for ≤ 2 days)</label>
+          {{ form.mentor }}
+        </div>
+
+
+        <div class="d-flex justify-content-between mt-4">
+          <a href="{% url 'student_dashboard' %}" 
+             class="btn btn-outline-secondary rounded-pill px-4 w-50 me-2">Cancel</a>
+          <button type="submit" 
+                  class="btn btn-success rounded-pill px-4 fw-semibold w-50">✅ Submit Request</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JS -->
+<script>
+  // Mentor toggle
+  function toggleMentorField() {
+    const startInput = document.getElementById("id_start_date");
+    const endInput = document.getElementById("id_end_date");
+    const mentorField = document.getElementById("mentorField");
+
+    if (startInput.value && endInput.value) {
+      const startDate = new Date(startInput.value);
+      const endDate = new Date(endInput.value);
+
+      if (!isNaN(startDate) && !isNaN(endDate)) {
+        const duration = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1;
+        mentorField.style.display = duration > 2 ? "none" : "block";
+        if (duration > 2) document.getElementById("id_mentor").value = "";
+      }
+    }
+  }
+
+  document.getElementById("id_start_date").addEventListener("change", toggleMentorField);
+  document.getElementById("id_end_date").addEventListener("change", toggleMentorField);
+  toggleMentorField();
+
+  const reasonInput = document.getElementById("id_reason");
+  const reasonCount = document.getElementById("reasonCount");
+
+  if (reasonInput) {
+    reasonInput.addEventListener("input", function () {
+      reasonCount.textContent = this.value.length;
+    });
+  }
+</script>
+{% endblock %}

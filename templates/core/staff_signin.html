@@ -1,0 +1,55 @@
+{% extends "core/base.html" %}
+{% block content %}
+
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background: #f8f9fa;">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 950px; width: 100%;">
+    <div class="row g-0">
+
+      <!-- 🔹 Left Illustration -->
+      <div class="col-md-6 d-flex justify-content-center align-items-center bg-white p-4">
+        <img src="/static/images/staff-img.png" alt="Admin Illustration" 
+             class="img-fluid" style="max-height: 450px;">
+      </div>
+
+      <!-- 🔹 Right Admin Login Form -->
+      <div class="col-md-6 bg-white p-5 d-flex flex-column justify-content-center">
+        <h2 class="text-center mb-3 text-primary fw-bold">Staff Login</h2>
+        <p class="text-muted text-center mb-4">Access the leave approval system</p>
+        
+        <form method="post" novalidate>
+          {% csrf_token %}
+          
+          <!-- Role -->
+          <div class="mb-3">
+            <label for="id_role" class="form-label">Role</label>
+            {{ form.role }}
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email" required>
+          </div>
+
+          <!-- Password -->
+          <div class="mb-3">
+            <label for="id_password" class="form-label">Password</label>
+            <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password" required>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn btn-info w-100 rounded-pill fw-semibold">Sign In</button>
+        </form>
+
+        <hr class="my-4">
+        
+        <!-- Extra Links -->
+        <div class="text-center">
+          <a href="{% url 'index' %}" class="btn btn-outline-success btn-sm rounded-pill">🏠 Go to Main Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

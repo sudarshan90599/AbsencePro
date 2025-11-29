@@ -1,0 +1,60 @@
+{% extends "core/base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+
+<div class="min-vh-100 d-flex align-items-center"
+     style="background: url('/static/images/index-img.jpg') center/cover no-repeat; position: relative;">
+  <div style="position:absolute; inset:0; background: rgba(0,0,0,0.55);"></div>
+  <div class="container position-relative text-white text-center">
+    <h1 class="fw-bold display-4 mb-3" style="text-shadow: 0 3px 8px rgba(0,0,0,0.5);">
+      AbsencePro
+    </h1>
+    <p class="lead mb-5" style="opacity:0.9;">
+      Institutional Leave Management System
+    </p>
+
+    <div class="d-flex flex-wrap gap-4 justify-content-center">
+
+      <!-- Student Portal -->
+      <div class="card shadow-lg border-0 rounded-4 p-4"
+           style="width:420px; backdrop-filter: blur(10px); background: rgba(255,255,255,0.92); transition: transform 0.2s;">
+        <div class="card-body text-center">
+          <div class="mb-3">
+            <i class="bi bi-person-badge-fill text-info" style="font-size:2.5rem;"></i>
+          </div>
+          <h4 class="fw-bold text-dark">Student Portal</h4>
+          <p class="text-muted">Submit and track your leave requests</p>
+          <a class="btn btn-info w-100 mb-2 rounded-pill fw-semibold" href="{% url 'student_signin' %}">Student Sign In</a>
+          <a class="btn btn-outline-info w-100 rounded-pill fw-semibold" href="{% url 'student_register' %}">Create Student Account</a>
+        </div>
+      </div>
+
+      <!-- Staff Portal -->
+      <div class="card shadow-lg border-0 rounded-4 p-4"
+           style="width:420px; backdrop-filter: blur(10px); background: rgba(255,255,255,0.92); transition: transform 0.2s;">
+        <div class="card-body text-center">
+          <div class="mb-3">
+            <i class="bi bi-briefcase-fill text-warning" style="font-size:2.5rem;"></i>
+          </div>
+          <h4 class="fw-bold text-dark">Staff Portal</h4>
+          <p class="text-muted">Review and approve leave requests</p>
+          <a class="btn btn-warning w-100 mb-2 rounded-pill fw-semibold" href="{% url 'staff_signin' %}">Staff Sign In</a>
+          <div class="mt-2 text-muted small fst-italic">
+            <b>Demo:</b> mentors and director accounts are pre-created.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 🔹 Styling -->
+<style>
+  .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35) !important;
+  }
+</style>
+
+{% endblock %}
+*

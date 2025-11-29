@@ -1,0 +1,109 @@
+{% extends "core/base.html" %}
+
+{% block navbar %}{% endblock %}  {#Removes the top navbar here #}
+
+{% block content %}
+<div class="d-flex justify-content-center align-items-center" style="min-height: 100vh; background: #f8f9fa;">
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden" style="max-width: 1050px; width: 100%;">
+    <div class="row g-0">
+
+      <div class="col-md-6 d-flex align-items-stretch">
+        <img src="/static/images/redister-img.jpg" alt="Student Illustration"
+             class="img-fluid w-100 h-100" style="object-fit: cover;">
+      </div>
+
+      <div class="col-md-6 bg-white p-5 d-flex flex-column justify-content-center">
+        <h2 class="text-center mb-3 text-primary fw-bold">Create Account</h2>
+        <p class="text-muted text-center mb-4">Register with your college credentials</p>
+        
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          <div class="mb-3">
+            <label for="id_full_name" class="form-label">Full Name</label>
+            <input type="text" name="full_name" id="id_full_name" class="form-control" placeholder="Enter your full name" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_email" class="form-label">College Email</label>
+            <input type="email" name="email" id="id_email" class="form-control" placeholder="Enter your email" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_mobile" class="form-label">Mobile Number</label>
+            <input type="text" name="mobile" id="id_mobile" class="form-control" placeholder="Enter 10-digit number" required maxlength="10">
+          </div>
+
+          <div class="mb-3">
+            <label for="id_password" class="form-label">Password</label>
+            <input type="password" name="password" id="id_password" class="form-control" placeholder="Enter your password" required>
+            <small id="passwordHelp" class="form-text"></small>
+          </div>
+
+          <div class="mb-3">
+            <label for="id_confirm_password" class="form-label">Confirm Password</label>
+            <input type="password" name="confirm_password" id="id_confirm_password" class="form-control" placeholder="Re-enter password" required>
+            <small id="confirmPasswordHelp" class="form-text"></small>
+          </div>
+
+          <button type="submit" class="btn btn-info w-100 rounded-pill fw-semibold">Create Account</button>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="text-center">
+          <p class="mb-1">Already have an account?</p>
+          <a href="{% url 'student_signin' %}" class="btn btn-outline-primary btn-sm rounded-pill">Sign in here</a>
+          <a href="{% url 'index' %}" class="btn btn-outline-secondary btn-sm rounded-pill">🏠 Go to Main Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Validation -->
+<script>
+  const pwdInput = document.getElementById("id_password");
+  const confirmPwdInput = document.getElementById("id_confirm_password");
+  const pwdHelp = document.getElementById("passwordHelp");
+  const confirmPwdHelp = document.getElementById("confirmPasswordHelp");
+
+  function validatePassword() {
+    const pwd = pwdInput.value;
+    let errors = [];
+
+    if (pwd.length <= 6) {
+      errors.push("Password must be more than 6 characters.");
+    }
+    if (!/[A-Z]/.test(pwd)) {
+      errors.push("Password must contain at least one uppercase letter (A-Z).");
+    }
+
+    if (errors.length > 0) {
+      pwdHelp.textContent = errors.join(" ");
+      pwdHelp.style.color = "red";
+    } else {
+      pwdHelp.textContent = "✅ Password looks good!";
+      pwdHelp.style.color = "green";
+    }
+    validateConfirmPassword();
+  }
+
+  function validateConfirmPassword() {
+    if (confirmPwdInput.value === "") {
+      confirmPwdHelp.textContent = "";
+      return;
+    }
+    if (pwdInput.value !== confirmPwdInput.value) {
+      confirmPwdHelp.textContent = "Passwords do not match.";
+      confirmPwdHelp.style.color = "red";
+    } else {
+      confirmPwdHelp.textContent = "✅ Passwords match!";
+      confirmPwdHelp.style.color = "green";
+    }
+  }
+
+  pwdInput.addEventListener("input", validatePassword);
+  confirmPwdInput.addEventListener("input", validateConfirmPassword);
+</script>
+{% endblock %}
